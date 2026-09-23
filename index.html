@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dimensionnement des évacuations d'eaux usées — NBN EN 12056-2</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1E4E54">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDE8DC;
+    --card: #F8F5EC;
+    --ink: #1E2A28;
+    --ink-soft: #55645F;
+    --ink-faint: #8A9490;
+    --line: #C7BFA9;
+    --line-soft: #DAD3BF;
+    --flow: #2A6B72;
+    --flow-dark: #1E4E54;
+    --copper: #B0602C;
+    --good: #3E7A4C;
+    --bad: #A23E2C;
+    --radius: 3px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1B2321;
+      --card: #222b28;
+      --ink: #EDE8DC;
+      --ink-soft: #AAB5AF;
+      --ink-faint: #6E7975;
+      --line: #3B4642;
+      --line-soft: #2C3532;
+      --flow: #5FA6AC;
+      --flow-dark: #7FC0C5;
+      --copper: #D68A54;
+      --good: #6FBE7E;
+      --bad: #E07A63;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1220px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  header.top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 8px;
+  }
+  header.top h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin: 0;
+    max-width: 640px;
+  }
+  header.top .ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: right;
+    line-height: 1.6;
+  }
+  p.lede {
+    color: var(--ink-soft);
+    max-width: 760px;
+    margin: 14px 0 22px;
+    font-size: 14px;
+  }
+
+  .print-header { display: none; }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 0.8fr 1fr 0.8fr;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 26px;
+  }
+  @media (max-width: 900px) { .project-grid { grid-template-columns: 1fr 1fr; } }
+
+  details.legend {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 22px;
+  }
+  details.legend summary {
+    cursor: pointer;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--flow-dark);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details.legend summary::-webkit-details-marker { display: none; }
+  details.legend summary::before {
+    content: "+";
+    font-family: 'IBM Plex Mono', monospace;
+    width: 16px; text-align: center;
+    color: var(--flow);
+  }
+  details.legend[open] summary::before { content: "–"; }
+  .legend-body {
+    padding: 4px 16px 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .legend-body h4 {
+    margin: 0 0 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .legend-body table { width: 100%; border-collapse: collapse; }
+  .legend-body td { padding: 2px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  .legend-body td:last-child { text-align: right; color: var(--ink); }
+
+  #warningsBanner {
+    display: none;
+    background: rgba(176,96,44,0.12);
+    border: 1px solid var(--copper);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 22px;
+    font-size: 12.5px;
+    color: var(--copper);
+  }
+  #warningsBanner.show { display: block; }
+  #warningsBanner ul { margin: 6px 0 0; padding-left: 18px; }
+  #warningsBanner strong { color: var(--ink); }
+
+  .section-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .section-nav h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; }
+  button.add-btn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--flow);
+    color: var(--paper);
+    border: none;
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  button.add-btn:hover { background: var(--flow-dark); }
+
+  .appl-form {
+    background: var(--card);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    display: none;
+  }
+  .appl-form.show { display: block; }
+  .appl-form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+  .appl-form-row > div { flex: 1 1 140px; }
+  .appl-form-row button { flex: 0 0 auto; }
+  .custom-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .custom-chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    padding: 5px 8px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .custom-chip button {
+    background: none; border: none; color: var(--bad); cursor: pointer; font-size: 13px; padding: 0; line-height: 1;
+  }
+  table.appl-table { width: 100%; border-collapse: collapse; font-size: 12.5px; max-height: 260px; }
+  table.appl-table th {
+    text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--ink-faint); font-weight: 600; padding: 4px 6px; border-bottom: 1px solid var(--line);
+  }
+  table.appl-table td { padding: 3px 6px; border-bottom: 1px dashed var(--line-soft); vertical-align: middle; }
+  table.appl-table input[type="number"] { width: 72px; padding: 4px 6px; font-family: 'IBM Plex Mono', monospace; }
+  table.appl-table select { width: 90px; padding: 4px 6px; font-family: 'IBM Plex Mono', monospace; }
+  table.appl-table .appl-del { background: none; border: none; color: var(--bad); cursor: pointer; font-size: 14px; }
+  table.appl-table .appl-del:disabled { color: var(--ink-faint); cursor: default; }
+
+  .cards { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--flow);
+    border-radius: var(--radius);
+    padding: 18px 20px 20px;
+  }
+  .card.cycle { border-left-color: var(--bad); }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--flow-dark);
+    border: 1px solid var(--line);
+    padding: 3px 7px;
+    border-radius: var(--radius);
+    white-space: nowrap;
+  }
+  input.name-input {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: var(--ink);
+    padding: 2px 0;
+    min-width: 120px;
+    flex: 1 1 160px;
+  }
+  input.name-input:focus { outline: none; border-bottom: 1px solid var(--flow); }
+  button.del-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  button.del-btn:hover { border-color: var(--bad); color: var(--bad); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 720px) { .card-grid { grid-template-columns: 1fr; } }
+
+  .field-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+
+  .appliances-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 14px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .appliance-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--line-soft);
+    font-size: 13px;
+  }
+  .appliance-row span.du {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+  .appliance-row input.qty {
+    width: 42px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    text-align: center;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 3px 2px;
+    color: var(--ink);
+  }
+
+  .params-col { display: flex; flex-direction: column; gap: 14px; }
+  .params-row { display: flex; gap: 10px; }
+  .params-row > div { flex: 1; }
+  label.mini { font-size: 11px; color: var(--ink-faint); display: block; margin-bottom: 4px; }
+  select, input[type="number"], input[type="text"], input[type="date"] {
+    width: 100%;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 7px 8px;
+    color: var(--ink);
+  }
+
+  .upstream-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+  .chip.on {
+    background: var(--flow);
+    border-color: var(--flow);
+    color: var(--paper);
+  }
+  .chip.empty { color: var(--ink-faint); border-style: dashed; cursor: default; }
+
+  .result-strip {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    gap: 18px;
+    align-items: end;
+  }
+  @media (max-width: 900px) { .result-strip { grid-template-columns: repeat(3, 1fr); row-gap: 10px; } }
+  .result-item .rlabel {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin-bottom: 3px;
+  }
+  .result-item .rval {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .result-item .runit { font-size: 11px; color: var(--ink-soft); font-weight: 400; }
+  .status-badge {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: var(--radius);
+  }
+  .status-ok { background: rgba(62,122,76,0.15); color: var(--good); }
+  .status-warn { background: rgba(176,96,44,0.15); color: var(--copper); }
+  .status-bad { background: rgba(162,62,44,0.15); color: var(--bad); }
+
+  .diagram-wrap {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+  }
+  #diagramInner { position: relative; min-height: 60px; }
+  #diagramSvg { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+  #diagramLevels { display: flex; gap: 64px; position: relative; }
+  .level { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+  .dnode {
+    width: 176px;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 9px 11px;
+    position: relative;
+    z-index: 1;
+  }
+  .dnode-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dnode-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  table.summary {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--card);
+    border: 1px solid var(--line);
+  }
+  table.summary th, table.summary td {
+    padding: 9px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  table.summary th {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-bottom: 2px solid var(--line);
+  }
+  table.summary td.num, table.summary th.num { font-family: 'IBM Plex Mono', monospace; text-align: right; }
+  table.summary tr:last-child td { border-bottom: none; }
+
+  .foot-actions { display: flex; gap: 10px; margin: 16px 0 6px; flex-wrap: wrap; }
+  button.ghost {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12.5px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  button.ghost:hover { border-color: var(--flow); color: var(--flow-dark); }
+
+  footer.note {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-faint);
+    max-width: 760px;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .add-btn, .del-btn, .foot-actions, details.legend, .appl-form, .toolbar,
+    #warningsBanner, .project-grid, .chip { display: none !important; }
+    .print-header { display: block !important; }
+    .card { break-inside: avoid; border-left-color: #000 !important; }
+    .diagram-wrap { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Dimensionnement des évacuations d'eaux usées</h1>
+    <div class="ref">NBN EN 12056‑1/‑2 (2000)<br>Pré‑dimensionnement par tronçons</div>
+  </header>
+  <p class="lede">Calcule le débit de pointe (Q<sub>ww</sub> = K·√ΣDU) et le diamètre requis pour chaque tronçon, en cumulant automatiquement les débits des tronçons amont raccordés. Outil d'aide au pré‑dimensionnement — à confirmer par un calcul détaillé pour les configurations complexes.</p>
+
+  <div class="print-header" id="printHeader"></div>
+
+  <div class="project-grid">
+    <div><label class="mini">Projet</label><input type="text" id="pName" placeholder="Nom du projet"></div>
+    <div><label class="mini">Référence</label><input type="text" id="pRef" placeholder="Réf. dossier"></div>
+    <div><label class="mini">Auteur</label><input type="text" id="pAuthor" placeholder="Ingénieur / bureau"></div>
+    <div><label class="mini">Date</label><input type="date" id="pDate"></div>
+    <div><label class="mini">Vérifié par</label><input type="text" id="pChecker" placeholder="Nom du vérificateur"></div>
+    <div><label class="mini">Date de vérification</label><input type="date" id="pCheckDate"></div>
+  </div>
+
+  <details class="legend">
+    <summary>Hypothèses et valeurs de référence utilisées</summary>
+    <div class="legend-body">
+      <div>
+        <h4>Unités de débit (DU) — Système I</h4>
+        <table id="duTable"></table>
+      </div>
+      <div>
+        <h4>Coefficient de fréquentation K</h4>
+        <table>
+          <tr><td>Usage discontinu (logement, bureau)</td><td>0,5</td></tr>
+          <tr><td>Usage régulier (hôpital, école, hôtel)</td><td>0,7</td></tr>
+          <tr><td>Usage fréquent (sanitaires publics)</td><td>1,0</td></tr>
+          <tr><td>Usage spécial (laboratoire)</td><td>1,2</td></tr>
+        </table>
+        <h4 style="margin-top:14px;">Coefficient de Strickler K<sub>s</sub></h4>
+        <table>
+          <tr><td>PVC / PE</td><td>100</td></tr>
+          <tr><td>Fonte</td><td>90</td></tr>
+          <tr><td>Grès vitrifié</td><td>80</td></tr>
+          <tr><td>Béton lissé</td><td>75</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4>Méthode</h4>
+        <p style="margin:0 0 8px;">Q<sub>ww</sub> cumulé = K·√(ΣDU propre + ΣDU des tronçons amont). Si Q<sub>ww</sub> &lt; DU du plus grand appareil raccordé en amont, ce DU est retenu comme débit de calcul (règle EN 12056‑2).</p>
+        <p style="margin:0 0 8px;"><strong>Branchement individuel</strong> (aucun tronçon amont) : le diamètre retenu est le diamètre minimal usuel de raccordement de l'appareil le plus contraignant.</p>
+        <p style="margin:0;"><strong>Collecteur</strong> (≥1 tronçon amont) : diamètre = le plus grand entre le calcul hydraulique cumulé (Manning‑Strickler, écoulement partiel), le mini des appareils propres, et le diamètre des tronçons amont. Vitesse d'autocurage recommandée ≥ 0,5 m/s ; alerte au‑delà de 2,5 m/s.</p>
+      </div>
+    </div>
+  </details>
+
+  <div id="warningsBanner"><strong>À vérifier</strong><ul id="warningsList"></ul></div>
+
+  <div class="section-nav">
+    <h2>Tronçons</h2>
+    <div class="toolbar">
+      <button class="ghost" id="toggleApplFormBtn">+ Appareil personnalisé</button>
+      <button class="add-btn" id="addBtn">+ Ajouter un tronçon</button>
+    </div>
+  </div>
+
+  <div class="appl-form" id="applForm">
+    <p class="field-label" style="margin-bottom:4px;">Bibliothèque d'appareils</p>
+    <p style="font-size:12px; color:var(--ink-soft); margin:0 0 12px;">Calibrez les valeurs DU et DN mini sur votre référence normative ou vos habitudes de bureau — elles s'appliquent à tous les tronçons.</p>
+    <table class="appl-table" id="applTable"></table>
+    <div class="appl-form-row" style="margin-top:14px;">
+      <div><label class="mini">Nom du nouvel appareil</label><input type="text" id="caLabel" placeholder="ex. Machine industrielle"></div>
+      <div><label class="mini">DU (l/s)</label><input type="number" id="caDU" step="0.1" min="0" placeholder="0.8"></div>
+      <div><label class="mini">DN minimal</label><select id="caDN"></select></div>
+      <button class="add-btn" id="caAdd">Ajouter</button>
+    </div>
+    <button class="ghost" id="resetApplBtn" style="margin-top:12px;">Réinitialiser les valeurs par défaut</button>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="section-nav">
+    <h2>Schéma du réseau</h2>
+  </div>
+  <div class="diagram-wrap">
+    <div class="diagram-scroll">
+      <div id="diagramInner">
+        <svg id="diagramSvg"></svg>
+        <div id="diagramLevels"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-nav">
+    <h2>Récapitulatif</h2>
+  </div>
+  <table class="summary" id="summaryTable">
+    <thead>
+      <tr>
+        <th>Tronçon</th>
+        <th>Amont</th>
+        <th class="num">ΣDU propre</th>
+        <th class="num">ΣDU cumulé</th>
+        <th class="num">Q<sub>ww</sub> (l/s)</th>
+        <th class="num">DN recommandé</th>
+        <th class="num">Remplissage</th>
+        <th class="num">Vitesse (m/s)</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody id="summaryBody"></tbody>
+  </table>
+  <div class="foot-actions">
+    <button class="ghost" id="printBtn">Imprimer / PDF</button>
+    <button class="ghost" id="csvBtn">Exporter CSV</button>
+    <button class="ghost" id="saveBtn">Enregistrer le projet (.json)</button>
+    <button class="ghost" id="loadBtn">Charger un projet (.json)</button>
+    <input type="file" id="importInput" accept="application/json" style="display:none;">
+  </div>
+
+  <footer class="note">
+    Outil de pré‑dimensionnement indicatif basé sur NBN EN 12056‑1/‑2 (2000). Les unités de débit (DU) et coefficients affichés sont des valeurs usuelles du Système I ; certains fabricants ou cahiers des charges peuvent imposer des valeurs différentes. Ne remplace pas une note de calcul validée par un ingénieur pour les réseaux complexes, les longues distances, les charges ponctuelles importantes ou les configurations hors gravité.
+  </footer>
+
+</div>
+
+<script>
+const DEFAULT_APPLIANCES = [
+  { key: 'lavabo',   label: 'Lavabo / lave-mains',      du: 0.5, dnMin: 32 },
+  { key: 'bidet',    label: 'Bidet',                     du: 0.5, dnMin: 32 },
+  { key: 'baignoire',label: 'Baignoire',                 du: 0.8, dnMin: 40 },
+  { key: 'douche',   label: 'Douche',                    du: 0.6, dnMin: 40 },
+  { key: 'evier',    label: 'Évier de cuisine',           du: 0.8, dnMin: 40 },
+  { key: 'llinge',   label: 'Lave-linge (domestique)',    du: 0.8, dnMin: 40 },
+  { key: 'lvaiss',   label: 'Lave-vaisselle (domestique)',du: 0.8, dnMin: 40 },
+  { key: 'wc6',      label: 'WC — chasse 6 L',            du: 2.0, dnMin: 90 },
+  { key: 'wc9',      label: 'WC — chasse 7,5–9 L',        du: 2.5, dnMin: 100 },
+  { key: 'urinrob',  label: 'Urinoir à robinet',          du: 0.5, dnMin: 40 },
+  { key: 'urinres',  label: 'Urinoir à réservoir',        du: 0.8, dnMin: 50 },
+  { key: 'sol50',    label: 'Siphon de sol DN50',         du: 0.8, dnMin: 50 },
+  { key: 'sol100',   label: 'Siphon de sol DN70/100',     du: 1.5, dnMin: 100 },
+];
+let appliances = DEFAULT_APPLIANCES.map(a => Object.assign({}, a, { base: true }));
+function allAppliances() { return appliances; }
+function findAppliance(key) { return appliances.find(a => a.key === key); }
+
+const MATERIALS = [
+  { key: 'pvc',   label: 'PVC / PE', ks: 100 },
+  { key: 'fonte', label: 'Fonte',    ks: 90 },
+  { key: 'gres',  label: 'Grès vitrifié', ks: 80 },
+  { key: 'beton', label: 'Béton lissé', ks: 75 },
+];
+
+const K_OPTIONS = [
+  { v: 0.5, label: 'K 0,5 — usage discontinu' },
+  { v: 0.7, label: 'K 0,7 — usage régulier' },
+  { v: 1.0, label: 'K 1,0 — usage fréquent' },
+  { v: 1.2, label: 'K 1,2 — usage spécial' },
+];
+
+const FILL_OPTIONS = [
+  { v: 0.5, label: 'h/d 0,5 — branchement / chute' },
+  { v: 0.7, label: 'h/d 0,7 — collecteur' },
+];
+
+const DIAMETERS_MM = [32, 40, 50, 63, 75, 90, 100, 110, 125, 160, 200, 250, 315];
+
+let sections = [];
+let idCounter = 1;
+let project = { name: '', ref: '', author: '', date: new Date().toISOString().slice(0, 10), checker: '', checkDate: '' };
+
+function esc(str) {
+  return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function newSection(overrides) {
+  const s = {
+    id: 'S' + (idCounter++),
+    name: 'T' + (idCounter - 1),
+    upstream: [],
+    appliances: {},
+    slope: 2,
+    k: 0.5,
+    material: 'pvc',
+    fillMax: 0.5,
+  };
+  return Object.assign(s, overrides || {});
+}
+
+// --- Demo data to show cumulative behaviour ---
+function seedDemo() {
+  const t1 = newSection({ name: 'T1 — Sanitaires ch. 1', appliances: { wc6: 1, lavabo: 1 }, slope: 2, k: 0.5, fillMax: 0.5 });
+  const t2 = newSection({ name: 'T2 — Sanitaires ch. 2', appliances: { douche: 1, lavabo: 1 }, slope: 2, k: 0.5, fillMax: 0.5, upstream: [t1.id] });
+  const t3 = newSection({ name: 'T3 — Collecteur général', appliances: { evier: 1 }, slope: 1.5, k: 0.5, fillMax: 0.7, upstream: [t2.id] });
+  sections = [t1, t2, t3];
+}
+seedDemo();
+
+// --- Hydraulics ---
+function partialFlow(D_mm, y, ks, slopePct) {
+  const D = D_mm / 1000;
+  const S = slopePct / 100;
+  if (y <= 0 || S <= 0) return { Q: 0, V: 0 };
+  const yy = Math.min(y, 0.999999);
+  const theta = 2 * Math.acos(1 - 2 * yy);
+  const A = (D * D / 8) * (theta - Math.sin(theta));
+  const P = (D / 2) * theta;
+  const R = A / P;
+  const V = ks * Math.pow(R, 2 / 3) * Math.sqrt(S);
+  const Q = V * A * 1000; // l/s
+  return { Q, V };
+}
+
+function solveFillForFlow(D_mm, qwwLs, ks, slopePct) {
+  let lo = 0.0005, hi = 0.999;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    const { Q } = partialFlow(D_mm, mid, ks, slopePct);
+    if (Q < qwwLs) lo = mid; else hi = mid;
+  }
+  const y = (lo + hi) / 2;
+  const { V } = partialFlow(D_mm, y, ks, slopePct);
+  return { y, V };
+}
+
+function findDiameter(qwwLs, ks, slopePct, fillMax) {
+  if (slopePct <= 0) return { error: 'pente nulle ou négative' };
+  for (const D of DIAMETERS_MM) {
+    const cap = partialFlow(D, fillMax, ks, slopePct).Q;
+    if (cap >= qwwLs) {
+      const { y, V } = solveFillForFlow(D, qwwLs, ks, slopePct);
+      return { D, y, V };
+    }
+  }
+  return { error: 'hors plage (>315 mm)' };
+}
+
+// --- Per-section own values ---
+function ownDU(section) {
+  return allAppliances().reduce((sum, a) => sum + (section.appliances[a.key] || 0) * a.du, 0);
+}
+function ownMaxDU(section) {
+  let max = 0;
+  allAppliances().forEach(a => { if ((section.appliances[a.key] || 0) > 0) max = Math.max(max, a.du); });
+  return max;
+}
+function ownTableMinDN(section) {
+  let max = 0;
+  allAppliances().forEach(a => { if ((section.appliances[a.key] || 0) > 0) max = Math.max(max, a.dnMin); });
+  return max;
+}
+function byId(id) { return sections.find(s => s.id === id); }
+
+// --- Cumulative DU with cycle detection ---
+function cumulative(id, visiting) {
+  visiting = visiting || new Set();
+  if (visiting.has(id)) return { du: 0, maxDU: 0, cycle: true };
+  visiting.add(id);
+  const s = byId(id);
+  if (!s) return { du: 0, maxDU: 0, cycle: false };
+  let du = ownDU(s);
+  let maxDU = ownMaxDU(s);
+  let cycle = false;
+  s.upstream.forEach(uid => {
+    const r = cumulative(uid, new Set(visiting));
+    du += r.du;
+    maxDU = Math.max(maxDU, r.maxDU);
+    if (r.cycle) cycle = true;
+  });
+  return { du, maxDU, cycle };
+}
+
+// --- Full diameter computation, memoized per render pass ---
+function computeForSection(section, memo) {
+  memo = memo || new Map();
+  if (memo.has(section.id)) return memo.get(section.id);
+
+  const agg = cumulative(section.id);
+  const ownD = ownDU(section);
+  const ownMinDN = ownTableMinDN(section);
+  const mat = MATERIALS.find(m => m.key === section.material) || MATERIALS[0];
+  let qww = section.k * Math.sqrt(agg.du);
+  if (agg.maxDU > qww) qww = agg.maxDU;
+
+  if (agg.cycle) {
+    const out = { agg, ownD, ownMinDN, qww, result: { error: 'boucle détectée dans les tronçons amont' }, cycle: true, isCollector: section.upstream.length > 0 };
+    memo.set(section.id, out);
+    return out;
+  }
+
+  const isCollector = section.upstream.length > 0;
+  const hydraulic = isCollector ? findDiameter(qww, mat.ks, section.slope, section.fillMax) : { D: null };
+  let finalD = null, note = '';
+
+  if (!isCollector) {
+    finalD = ownMinDN || null;
+    note = 'mini appareil (branchement)';
+  } else {
+    let upstreamMax = 0;
+    section.upstream.forEach(uid => {
+      const us = byId(uid);
+      if (!us) return;
+      const r = computeForSection(us, memo);
+      if (r.result && r.result.D) upstreamMax = Math.max(upstreamMax, r.result.D);
+    });
+    finalD = Math.max(hydraulic.D || 0, ownMinDN || 0, upstreamMax) || null;
+    if (finalD === upstreamMax && upstreamMax >= (hydraulic.D || 0) && upstreamMax >= (ownMinDN || 0) && upstreamMax > 0) {
+      note = "imposé par l'amont";
+    } else if (finalD === ownMinDN && ownMinDN >= (hydraulic.D || 0)) {
+      note = 'mini appareil';
+    } else {
+      note = 'calcul hydraulique cumulé';
+    }
+  }
+
+  let result;
+  if (!finalD) {
+    result = { error: 'aucun appareil raccordé' };
+  } else if (section.slope <= 0) {
+    result = { D: finalD, y: null, V: null, note: note + ' — pente à renseigner' };
+  } else if (isCollector && hydraulic.error) {
+    result = { error: hydraulic.error };
+  } else {
+    const { y, V } = solveFillForFlow(finalD, qww, mat.ks, section.slope);
+    result = { D: finalD, y, V, note };
+  }
+
+  const out = { agg, ownD, ownMinDN, qww, result, cycle: false, isCollector };
+  memo.set(section.id, out);
+  return out;
+}
+
+function statusFor(comp) {
+  if (comp.cycle) return { cls: 'status-bad', label: 'Boucle amont' };
+  if (comp.result.error) return { cls: 'status-bad', label: comp.result.error };
+  if (comp.result.V == null) return { cls: 'status-ok', label: 'Mini appareil' };
+  if (comp.result.V < 0.5) return { cls: 'status-warn', label: 'Vitesse faible (dépôts)' };
+  if (comp.result.V > 2.5) return { cls: 'status-warn', label: 'Vitesse élevée' };
+  return { cls: 'status-ok', label: 'Conforme' };
+}
+
+// --- Topological levels for the diagram (longest path from a root) ---
+function computeLevels() {
+  const memo = new Map();
+  function lvl(id, visiting) {
+    if (memo.has(id)) return memo.get(id);
+    if (visiting.has(id)) return 0;
+    visiting.add(id);
+    const s = byId(id);
+    if (!s) return 0;
+    let l = 0;
+    s.upstream.forEach(uid => { l = Math.max(l, lvl(uid, new Set(visiting)) + 1); });
+    memo.set(id, l);
+    return l;
+  }
+  sections.forEach(s => lvl(s.id, new Set()));
+  return memo;
+}
+
+// --- Rendering: static shells ---
+function fmt(n, d) { return (isFinite(n) ? n.toFixed(d != null ? d : 2) : '—'); }
+
+function renderDUTable() {
+  const el = document.getElementById('duTable');
+  el.innerHTML = '<tr><td></td><td style="color:var(--ink-faint);">DU</td><td style="color:var(--ink-faint);">DN mini</td></tr>' +
+    allAppliances().map(a => `<tr><td>${esc(a.label)}</td><td>${fmt(a.du,1)} l/s</td><td>DN ${a.dnMin}</td></tr>`).join('');
+}
+
+function applianceRowsHTML(section) {
+  return allAppliances().map(a => `
+    <div class="appliance-row">
+      <span>${esc(a.label)} <span class="du">${fmt(a.du,1)} · DN${a.dnMin}</span></span>
+      <input class="qty" type="number" min="0" step="1" value="${section.appliances[a.key] || 0}"
+        data-sid="${section.id}" data-akey="${a.key}">
+    </div>`).join('');
+}
+
+function upstreamChipsHTML(section) {
+  const others = sections.filter(s => s.id !== section.id);
+  if (!others.length) return '<span class="chip empty">aucun autre tronçon</span>';
+  return others.map(o => {
+    const on = section.upstream.includes(o.id);
+    return `<span class="chip ${on ? 'on' : ''}" data-sid="${section.id}" data-uid="${o.id}" data-name-for="${o.id}">${esc(o.name)}</span>`;
+  }).join('');
+}
+
+function optionsHTML(list, current, valueKey, labelKey) {
+  return list.map(o => `<option value="${o[valueKey]}" ${String(o[valueKey])===String(current)?'selected':''}>${o[labelKey]}</option>`).join('');
+}
+
+function resultStripHTML(comp) {
+  const st = statusFor(comp);
+  const dnLabel = comp.result.D ? ('DN ' + comp.result.D) : '—';
+  return `
+    <div class="result-item"><div class="rlabel">ΣDU propre</div><div class="rval">${fmt(comp.ownD,1)}</div></div>
+    <div class="result-item"><div class="rlabel">ΣDU cumulé</div><div class="rval">${fmt(comp.agg.du,1)}</div></div>
+    <div class="result-item"><div class="rlabel">Q<sub>ww</sub> cumulé</div><div class="rval">${fmt(comp.qww,2)}<span class="runit"> l/s</span></div></div>
+    <div class="result-item"><div class="rlabel">DN recommandé</div><div class="rval">${dnLabel}</div><div class="runit">${comp.result.note || ''}</div></div>
+    <div class="result-item"><div class="rlabel">Remplissage</div><div class="rval">${comp.result.y != null ? fmt(comp.result.y*100,0) + '%' : '—'}</div></div>
+    <div class="result-item"><div class="rlabel">Vitesse</div><div class="rval">${comp.result.V != null ? fmt(comp.result.V,2) : '—'}<span class="runit"> m/s</span></div>
+      <span class="status-badge ${st.cls}" style="margin-top:6px; display:inline-block;">${st.label}</span>
+    </div>`;
+}
+
+function renderCards() {
+  const wrap = document.getElementById('cards');
+  const memo = new Map();
+  wrap.innerHTML = sections.map((s, i) => {
+    const comp = computeForSection(s, memo);
+    return `
+    <div class="card ${comp.cycle ? 'cycle' : ''}" id="card-${s.id}">
+      <div class="card-head">
+        <span class="tag">Tronçon ${i + 1}</span>
+        <span class="tag" style="color: var(--ink-soft);">${comp.isCollector ? 'Collecteur' : 'Branchement individuel'}</span>
+        <input class="name-input" data-sid="${s.id}" value="${esc(s.name)}">
+        <button class="del-btn" data-sid="${s.id}">Supprimer</button>
+      </div>
+      <div class="card-grid">
+        <div>
+          <p class="field-label">Appareils raccordés directement à ce tronçon</p>
+          <div class="appliances-grid">${applianceRowsHTML(s)}</div>
+        </div>
+        <div class="params-col">
+          <div>
+            <p class="field-label">Tronçons amont (se déversent ici)</p>
+            <div class="upstream-chips">${upstreamChipsHTML(s)}</div>
+          </div>
+          <div class="params-row">
+            <div>
+              <label class="mini">Pente (%)</label>
+              <input type="number" step="0.1" min="0" data-sid="${s.id}" data-field="slope" value="${s.slope}">
+            </div>
+            <div>
+              <label class="mini">Matériau</label>
+              <select data-sid="${s.id}" data-field="material">${optionsHTML(MATERIALS, s.material, 'key', 'label')}</select>
+            </div>
+          </div>
+          <div class="params-row">
+            <div>
+              <label class="mini">Coefficient K</label>
+              <select data-sid="${s.id}" data-field="k">${optionsHTML(K_OPTIONS, s.k, 'v', 'label')}</select>
+            </div>
+            <div>
+              <label class="mini">Remplissage max.</label>
+              <select data-sid="${s.id}" data-field="fillMax">${optionsHTML(FILL_OPTIONS, s.fillMax, 'v', 'label')}</select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="result-strip" id="results-${s.id}">${resultStripHTML(comp)}</div>
+    </div>`;
+  }).join('');
+  bindLiveEvents();
+  bindStructuralEvents();
+}
+
+// --- Lightweight refresh: results, summary, diagram, warnings — never touches input focus ---
+function updateResults() {
+  const memo = new Map();
+  sections.forEach(s => {
+    const comp = computeForSection(s, memo);
+    const cardEl = document.getElementById('card-' + s.id);
+    const resEl = document.getElementById('results-' + s.id);
+    if (cardEl) cardEl.classList.toggle('cycle', !!comp.cycle);
+    if (resEl) resEl.innerHTML = resultStripHTML(comp);
+  });
+  renderSummary();
+  renderDiagram();
+  renderWarnings();
+}
+
+function renderSummary() {
+  const body = document.getElementById('summaryBody');
+  const memo = new Map();
+  const levels = computeLevels();
+  const ordered = sections.slice().sort((a, b) => (levels.get(a.id) || 0) - (levels.get(b.id) || 0));
+  body.innerHTML = ordered.map(s => {
+    const comp = computeForSection(s, memo);
+    const st = statusFor(comp);
+    const amont = s.upstream.map(id => (byId(id) || {}).name).filter(Boolean).join(', ') || '—';
+    const dnLabel = comp.result.D ? ('DN ' + comp.result.D) : '—';
+    return `<tr>
+      <td>${esc(s.name)}</td>
+      <td>${esc(amont)}</td>
+      <td class="num">${fmt(comp.ownD,1)}</td>
+      <td class="num">${fmt(comp.agg.du,1)}</td>
+      <td class="num">${fmt(comp.qww,2)}</td>
+      <td class="num">${dnLabel}</td>
+      <td class="num">${comp.result.y != null ? fmt(comp.result.y*100,0)+'%' : '—'}</td>
+      <td class="num">${comp.result.V != null ? fmt(comp.result.V,2) : '—'}</td>
+      <td><span class="status-badge ${st.cls}">${st.label}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDiagram() {
+  const levels = computeLevels();
+  const maxLevel = sections.length ? Math.max(...sections.map(s => levels.get(s.id) || 0)) : -1;
+  const memo = new Map();
+  const cols = [];
+  for (let i = 0; i <= maxLevel; i++) cols.push(sections.filter(s => (levels.get(s.id) || 0) === i));
+  const colorFor = cls => cls === 'status-ok' ? 'var(--good)' : cls === 'status-warn' ? 'var(--copper)' : 'var(--bad)';
+  const html = cols.map(col => {
+    const nodes = col.map(s => {
+      const comp = computeForSection(s, memo);
+      const st = statusFor(comp);
+      const dnLabel = comp.result.D ? 'DN ' + comp.result.D : '—';
+      return `<div class="dnode" id="dnode-${s.id}" style="border-color:${colorFor(st.cls)};">
+        <div class="dnode-name">${esc(s.name)}</div>
+        <div class="dnode-meta"><span>${dnLabel}</span><span>${fmt(comp.qww,2)} l/s</span></div>
+      </div>`;
+    }).join('');
+    return `<div class="level">${nodes}</div>`;
+  }).join('');
+  const container = document.getElementById('diagramLevels');
+  container.innerHTML = html || '<p style="color:var(--ink-faint); font-size:13px; margin:0;">Ajoutez des tronçons pour visualiser le réseau.</p>';
+  requestAnimationFrame(drawConnectors);
+}
+
+function drawConnectors() {
+  const svg = document.getElementById('diagramSvg');
+  const inner = document.getElementById('diagramInner');
+  if (!svg || !inner) return;
+  const rect0 = inner.getBoundingClientRect();
+  svg.setAttribute('width', Math.max(inner.scrollWidth, 1));
+  svg.setAttribute('height', Math.max(inner.scrollHeight, 1));
+  svg.innerHTML = '';
+  sections.forEach(s => {
+    s.upstream.forEach(uid => {
+      const a = document.getElementById('dnode-' + uid);
+      const b = document.getElementById('dnode-' + s.id);
+      if (!a || !b) return;
+      const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      const x1 = ra.right - rect0.left, y1 = ra.top + ra.height / 2 - rect0.top;
+      const x2 = rb.left - rect0.left, y2 = rb.top + rb.height / 2 - rect0.top;
+      const mx = (x1 + x2) / 2;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
+      path.setAttribute('fill', 'none');
+      path.style.stroke = 'var(--flow)';
+      path.setAttribute('stroke-width', '1.6');
+      svg.appendChild(path);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', x2); dot.setAttribute('cy', y2); dot.setAttribute('r', '3');
+      dot.style.fill = 'var(--flow)';
+      svg.appendChild(dot);
+    });
+  });
+}
+
+function renderWarnings() {
+  const warnings = [];
+  const nameCounts = {};
+  sections.forEach(s => { nameCounts[s.name] = (nameCounts[s.name] || 0) + 1; });
+  Object.entries(nameCounts).forEach(([n, c]) => { if (c > 1) warnings.push(`Nom de tronçon dupliqué : « ${esc(n)} »`); });
+  sections.forEach(s => {
+    const hasAppl = Object.values(s.appliances).some(q => q > 0);
+    if (!hasAppl && s.upstream.length === 0) warnings.push(`« ${esc(s.name)} » : aucun appareil ni tronçon amont`);
+    if (s.slope <= 0) warnings.push(`« ${esc(s.name)} » : pente non renseignée ou nulle`);
+  });
+  const banner = document.getElementById('warningsBanner');
+  const list = document.getElementById('warningsList');
+  if (warnings.length) {
+    list.innerHTML = warnings.map(w => `<li>${w}</li>`).join('');
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function renderApplTable() {
+  const el = document.getElementById('applTable');
+  el.innerHTML = '<tr><th>Appareil</th><th>DU (l/s)</th><th>DN mini</th><th></th></tr>' +
+    appliances.map(a => `<tr>
+      <td>${a.base ? esc(a.label) : `<input type="text" class="appl-label" data-akey="${a.key}" value="${esc(a.label)}">`}</td>
+      <td><input type="number" step="0.1" min="0" class="appl-du" data-akey="${a.key}" value="${a.du}"></td>
+      <td><select class="appl-dn" data-akey="${a.key}">${DIAMETERS_MM.map(d => `<option value="${d}" ${d===a.dnMin?'selected':''}>DN ${d}</option>`).join('')}</select></td>
+      <td><button class="appl-del" data-akey="${a.key}" ${a.base ? 'disabled' : ''} title="${a.base ? 'Appareil standard — non supprimable' : 'Retirer'}">×</button></td>
+    </tr>`).join('');
+  bindApplTableEvents();
+}
+
+function bindApplTableEvents() {
+  document.querySelectorAll('.appl-label').forEach(inp => inp.addEventListener('input', e => {
+    const a = findAppliance(e.target.dataset.akey);
+    a.label = e.target.value || a.label;
+    renderCards(); updateResults();
+  }));
+  document.querySelectorAll('.appl-du').forEach(inp => inp.addEventListener('input', e => {
+    const a = findAppliance(e.target.dataset.akey);
+    a.du = Math.max(0, parseFloat(e.target.value || '0'));
+    renderCards(); updateResults();
+  }));
+  document.querySelectorAll('.appl-dn').forEach(sel => sel.addEventListener('change', e => {
+    const a = findAppliance(e.target.dataset.akey);
+    a.dnMin = parseInt(e.target.value, 10);
+    renderCards(); updateResults();
+  }));
+  document.querySelectorAll('.appl-del').forEach(btn => btn.addEventListener('click', e => {
+    if (btn.disabled) return;
+    const key = e.target.dataset.akey;
+    appliances = appliances.filter(a => a.key !== key);
+    sections.forEach(s => { delete s.appliances[key]; });
+    renderApplTable(); renderDUTable(); renderCards(); updateResults();
+  }));
+}
+
+function updatePrintHeader() {
+  const ph = document.getElementById('printHeader');
+  const checkLine = project.checker
+    ? ` · Vérifié par ${esc(project.checker)}${project.checkDate ? ' le ' + esc(project.checkDate) : ''}`
+    : '';
+  ph.innerHTML = `<strong>${esc(project.name || 'Sans titre')}</strong> — Réf. ${esc(project.ref || '—')} · ${esc(project.author || '—')} · ${esc(project.date || '')}${checkLine}`;
+}
+
+function renderAll() {
+  renderDUTable();
+  renderApplTable();
+  renderCards();
+  updateResults();
+  updatePrintHeader();
+}
+
+// --- Events that only recompute + patch results (preserve input focus) ---
+function bindLiveEvents() {
+  document.querySelectorAll('input.qty').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const s = byId(e.target.dataset.sid);
+      s.appliances[e.target.dataset.akey] = Math.max(0, parseInt(e.target.value || '0', 10));
+      updateResults();
+    });
+  });
+  document.querySelectorAll('input[data-field="slope"]').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const s = byId(e.target.dataset.sid);
+      s.slope = parseFloat(e.target.value || '0');
+      updateResults();
+    });
+  });
+  document.querySelectorAll('select[data-field]').forEach(sel => {
+    sel.addEventListener('change', e => {
+      const s = byId(e.target.dataset.sid);
+      const field = e.target.dataset.field;
+      s[field] = (field === 'k' || field === 'fillMax') ? parseFloat(e.target.value) : e.target.value;
+      updateResults();
+    });
+  });
+  document.querySelectorAll('input.name-input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const s = byId(e.target.dataset.sid);
+      s.name = e.target.value || s.name;
+      document.querySelectorAll(`.chip[data-name-for="${s.id}"]`).forEach(ch => { ch.textContent = s.name; });
+      updateResults();
+    });
+  });
+}
+
+// --- Events that change graph structure: full rebuild ---
+function bindStructuralEvents() {
+  document.querySelectorAll('.chip:not(.empty)').forEach(chip => {
+    chip.addEventListener('click', e => {
+      const s = byId(e.target.dataset.sid);
+      const uid = e.target.dataset.uid;
+      const idx = s.upstream.indexOf(uid);
+      if (idx >= 0) s.upstream.splice(idx, 1); else s.upstream.push(uid);
+      renderCards(); updateResults();
+    });
+  });
+  document.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const sid = e.target.dataset.sid;
+      sections = sections.filter(s => s.id !== sid);
+      sections.forEach(s => { s.upstream = s.upstream.filter(id => id !== sid); });
+      renderCards(); updateResults();
+    });
+  });
+}
+
+document.getElementById('addBtn').addEventListener('click', () => {
+  sections.push(newSection({ name: 'T' + idCounter }));
+  renderCards(); updateResults();
+});
+
+document.getElementById('toggleApplFormBtn').addEventListener('click', () => {
+  document.getElementById('applForm').classList.toggle('show');
+});
+
+const caDNSelect = document.getElementById('caDN');
+caDNSelect.innerHTML = DIAMETERS_MM.map(d => `<option value="${d}">DN ${d}</option>`).join('');
+
+document.getElementById('caAdd').addEventListener('click', () => {
+  const labelInp = document.getElementById('caLabel');
+  const duInp = document.getElementById('caDU');
+  const label = labelInp.value.trim();
+  const du = parseFloat(duInp.value);
+  const dnMin = parseInt(caDNSelect.value, 10);
+  if (!label || !(du > 0)) { labelInp.focus(); return; }
+  appliances.push({ key: 'c' + Date.now(), label, du, dnMin, base: false });
+  labelInp.value = ''; duInp.value = '';
+  renderDUTable(); renderApplTable(); renderCards(); updateResults();
+});
+
+document.getElementById('resetApplBtn').addEventListener('click', () => {
+  appliances.forEach(a => {
+    if (a.base) {
+      const d = DEFAULT_APPLIANCES.find(x => x.key === a.key);
+      if (d) { a.du = d.du; a.dnMin = d.dnMin; a.label = d.label; }
+    }
+  });
+  renderDUTable(); renderApplTable(); renderCards(); updateResults();
+});
+
+['pName', 'pRef', 'pAuthor', 'pDate', 'pChecker', 'pCheckDate'].forEach(id => {
+  document.getElementById(id).addEventListener('input', e => {
+    const map = { pName: 'name', pRef: 'ref', pAuthor: 'author', pDate: 'date', pChecker: 'checker', pCheckDate: 'checkDate' };
+    project[map[id]] = e.target.value;
+    updatePrintHeader();
+  });
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+document.getElementById('csvBtn').addEventListener('click', () => {
+  const rows = [['Tronçon','Amont','ΣDU propre','ΣDU cumulé','Qww (l/s)','DN recommandé','Remplissage (%)','Vitesse (m/s)','Statut']];
+  const memo = new Map();
+  sections.forEach(s => {
+    const comp = computeForSection(s, memo);
+    const st = statusFor(comp);
+    const amont = s.upstream.map(id => (byId(id) || {}).name).filter(Boolean).join(' + ') || '—';
+    rows.push([
+      s.name, amont, fmt(comp.ownD,1), fmt(comp.agg.du,1), fmt(comp.qww,2),
+      comp.result.D ? ('DN ' + comp.result.D) : '—',
+      comp.result.y != null ? fmt(comp.result.y*100,0) : '—',
+      comp.result.V != null ? fmt(comp.result.V,2) : '—',
+      st.label
+    ]);
+  });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(';')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'dimensionnement-evacuation-eu.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const data = { version: 2, project, appliances, sections };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const base = (project.name || 'projet-evacuation').replace(/[^a-z0-9\-_]+/gi, '-');
+  a.href = url; a.download = base + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('loadBtn').addEventListener('click', () => {
+  document.getElementById('importInput').click();
+});
+document.getElementById('importInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!Array.isArray(data.sections)) throw new Error('format invalide');
+      sections = data.sections;
+      if (Array.isArray(data.appliances) && data.appliances.length) {
+        appliances = data.appliances;
+      } else if (Array.isArray(data.customAppliances)) {
+        // compat with older exports (v1)
+        appliances = DEFAULT_APPLIANCES.map(a => Object.assign({}, a, { base: true }))
+          .concat(data.customAppliances.map(a => Object.assign({}, a, { base: false })));
+      }
+      project = Object.assign({ name: '', ref: '', author: '', date: '', checker: '', checkDate: '' }, data.project || {});
+      let maxN = 0;
+      sections.forEach(s => { const m = /^S(\d+)$/.exec(s.id); if (m) maxN = Math.max(maxN, parseInt(m[1], 10)); });
+      idCounter = maxN + 1;
+      document.getElementById('pName').value = project.name || '';
+      document.getElementById('pRef').value = project.ref || '';
+      document.getElementById('pAuthor').value = project.author || '';
+      document.getElementById('pDate').value = project.date || '';
+      document.getElementById('pChecker').value = project.checker || '';
+      document.getElementById('pCheckDate').value = project.checkDate || '';
+      renderAll();
+    } catch (err) {
+      alert('Fichier de projet invalide ou corrompu.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+document.getElementById('pName').value = project.name;
+document.getElementById('pRef').value = project.ref;
+document.getElementById('pAuthor').value = project.author;
+document.getElementById('pDate').value = project.date;
+document.getElementById('pChecker').value = project.checker;
+document.getElementById('pCheckDate').value = project.checkDate;
+
+renderAll();
+window.addEventListener('resize', () => requestAnimationFrame(drawConnectors));
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>
