@@ -3,6 +3,8 @@
 Outil de pré-dimensionnement par tronçons cumulés, basé sur NBN EN 12056-1/-2.
 Application web autonome (aucune dépendance serveur), installable comme une app (PWA).
 
+Version PC : https://christophe309306.github.io/evacuationEU-outils/
+
 ## Utilisation locale
 Ouvrez simplement `index.html` dans un navigateur. Le service worker (installation/hors-ligne) ne s'active qu'en HTTPS — voir ci-dessous pour l'activer pleinement.
 
